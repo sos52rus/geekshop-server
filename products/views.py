@@ -1,6 +1,6 @@
 from django.shortcuts import render
-import json
-from geekshop.settings import BASE_DIR
+
+from products.models import Product, ProductCategories
 
 
 def index(request):
@@ -11,6 +11,9 @@ def index(request):
 
 
 def products(request):
-    with open(BASE_DIR / 'products/fixture/data.json', encoding='utf-8') as json_file:
-        context = json.load(json_file)
+    context = {
+        "title": "geekShop - Каталог",
+        "products": Product.objects.all(),
+        "product_categories": ProductCategories.objects.all(),
+    }
     return render(request, 'products/products.html', context)
