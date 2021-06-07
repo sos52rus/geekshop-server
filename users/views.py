@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import auth
 from django.urls import reverse
 
-from users.forms import UserLoginForm
+from users.forms import UserLoginForm, UserRegisterForm
 
 
 def user_auth(request):
@@ -22,3 +22,25 @@ def user_auth(request):
     context = {'title': 'GeekShoop - Авторизация', 'form': form}
     return render(request, 'users/login.html', context)
 
+
+def user_register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('index'))
+
+        else:
+            print(form.errors)
+    else:
+        form = UserRegisterForm()
+    context = {
+        'title': 'GeekShoop - Регистрация',
+        'form': form,
+    }
+    return render(request, 'users/register.html', context)
+
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect(reverse('index'))
