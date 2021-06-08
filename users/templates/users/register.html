@@ -42,8 +42,8 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-6">
-                            <label class="small mb-1" for="{{ form.sex.id_for_label }}">Выберите свой пол</label>
-                            {{ form.sex }}
+                            <label class="small mb-1" for="{{ form.gender.id_for_label }}">Выберите свой пол</label>
+                            {{ form.gender }}
                         </div>
                     </div>
                     <div class="form-row">
@@ -67,7 +67,7 @@
                 </form>
             </div>
             <div class="card-footer text-center">
-                <div class="small"><a href="login.html">Уже есть аккаунт? Авторизоваться</a></div>
+                <div class="small"><a href="{% url 'users:login' %}">Уже есть аккаунт? Авторизоваться</a></div>
             </div>
         </div>
     </div>
