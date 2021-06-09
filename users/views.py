@@ -49,7 +49,7 @@ def profile(request):
         form = UserProfileForm(instance=request.user)
     context = {'title': 'GeekShop - Профиль',
                'form': form,
-               'basket': Basket.objects.all()}
+               'basket': Basket.objects.filter(user=request.user)}
     return render(request, 'users/profile.html', context)
 
 
