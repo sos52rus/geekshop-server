@@ -3,6 +3,7 @@ from django.contrib import auth, messages
 from django.urls import reverse
 
 from users.forms import UserLoginForm, UserRegisterForm, UserProfileForm
+from basket.models import Basket
 
 
 def user_auth(request):
@@ -17,7 +18,7 @@ def user_auth(request):
                 return HttpResponseRedirect(reverse('index'))
     else:
         form = UserLoginForm()
-    context = {'title': 'GeekShoop - Авторизация', 'form': form}
+    context = {'title': 'GeekShop - Авторизация', 'form': form}
     return render(request, 'users/login.html', context)
 
 
@@ -31,7 +32,7 @@ def user_register(request):
     else:
         form = UserRegisterForm()
     context = {
-        'title': 'GeekShoop - Регистрация',
+        'title': 'GeekShop - Регистрация',
         'form': form,
     }
     return render(request, 'users/register.html', context)
@@ -47,7 +48,8 @@ def profile(request):
     else:
         form = UserProfileForm(instance=request.user)
     context = {'title': 'GeekShop - Профиль',
-               'form': form}
+               'form': form,
+               'basket': Basket.objects.all()}
     return render(request, 'users/profile.html', context)
 
 
