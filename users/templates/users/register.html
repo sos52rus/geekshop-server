@@ -2,13 +2,15 @@
 
 {% block content %}
     <div class="col-lg-7">
-        <div class="alert alert-warning alert-dismissible fade show" role="alert"
-             style="margin-top: 50px;">
-            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+        {% if form.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert"
+                 style="margin-top: 50px;">
+                {{ form.errors | escape }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
         <div class="card shadow-lg border-0 rounded-lg mt-5">
             <div class="card-header"><h3 class="text-center font-weight-light my-4">Создать аккаунт</h3>
             </div>
@@ -42,8 +44,8 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-6">
-                            <label class="small mb-1" for="{{ form.sex.id_for_label }}">Выберите свой пол</label>
-                            {{ form.sex }}
+                            <label class="small mb-1" for="{{ form.gender.id_for_label }}">Выберите свой пол</label>
+                            {{ form.gender }}
                         </div>
                     </div>
                     <div class="form-row">
@@ -67,7 +69,7 @@
                 </form>
             </div>
             <div class="card-footer text-center">
-                <div class="small"><a href="login.html">Уже есть аккаунт? Авторизоваться</a></div>
+                <div class="small"><a href="{% url 'users:login' %}">Уже есть аккаунт? Авторизоваться</a></div>
             </div>
         </div>
     </div>
