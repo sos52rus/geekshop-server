@@ -7,7 +7,6 @@ from users.forms import UserLoginForm, UserRegisterForm, UserProfileForm
 from basket.models import Basket
 
 
-@login_required
 def user_auth(request):
     if request.method == 'POST':
         form = UserLoginForm(data=request.POST)
@@ -24,7 +23,6 @@ def user_auth(request):
     return render(request, 'users/login.html', context)
 
 
-@login_required
 def user_register(request):
     if request.method == 'POST':
         form = UserRegisterForm(data=request.POST)
@@ -57,7 +55,6 @@ def profile(request):
     return render(request, 'users/profile.html', context)
 
 
-@login_required
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
