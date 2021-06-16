@@ -15,3 +15,9 @@ class Basket(models.Model):
 
     def sum(self):
         return self.product.price * self.quantity
+
+    def total_sum(self):
+        return sum(position.sum() for position in Basket.objects.filter(user=self.user))
+
+    def total_quantity(self):
+        return sum(position.quantity for position in Basket.objects.filter(user=self.user))
