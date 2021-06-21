@@ -1,0 +1,75 @@
+{% extends 'admins/base.html' %}
+{% load static %}
+
+{% block content %}
+    <main>
+        <div class="container-fluid">
+            <h1 class="mt-4">Редактирование продукта | {{ selected_product.name }}</h1>
+            <div class="card-body">
+                <div class="col-lg-12 text-center">
+                    <img width="100" height="100"
+                         src="{% if selected_product.image %} {{ selected_product.image.url }}
+                              {% else %} {% static 'vendor/img/products/default_image.jpg' %}
+                              {% endif %}"
+                         class="img-thumbnail">
+                </div>
+                <form action="{% url 'admins:admin_product_update' selected_product.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row py-2">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="mb-1" for="{{ form.name.id_for_label }}">Название</label>
+                                {{ form.name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row py-2">
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label class="mb-1" for="{{ form.description.id_for_label }}">Описание</label>
+                                {{ form.description }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row py-2">
+                        <div class="col-lg-12">
+                            <div class="custom-file">
+                                {{ form.image }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row py-2">
+                        <div class="col-lg-6">
+                            <label class="mb-1" for="{{ form.price.id_for_label }}">Цена</label>
+                            {{ form.price }}
+                        </div>
+                    </div>
+                    <div class="form-row py-2">
+                        <div class="col-lg-6">
+                            <label class="mb-1" for="{{ form.quantity.id_for_label }}">Кол-во</label>
+                            {{ form.quantity }}
+                        </div>
+                    </div>
+                    <div class="form-row py-2">
+                        <div class="col-lg-6">
+                            <label class="mb-1" for="{{ form.category.id_for_label }}">Категория</label>
+                            {{ form.category }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-lg-12" style="margin-top: 33px;">
+                            <input class="btn btn-info btn-block" type="submit" value="Сохранить">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-lg-12" style="margin-top: 33px;">
+                        <a href="{% url 'admins:admin_product_delete' selected_product.id %}" class="btn btn-danger btn-block">
+                            Удалить
+                        </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+{% endblock %}

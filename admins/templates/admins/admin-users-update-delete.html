@@ -1,0 +1,100 @@
+{% extends 'admins/base.html' %}
+{% load static %}
+
+{% block content %}
+    <main>
+        <div class="container-fluid">
+            <h1 class="mt-4">Редактирование пользователя | {{ selected_user.username }}</h1>
+            <div class="card-body">
+                <div class="col-lg-12 text-center">
+                    <img width="100" height="100"
+                         src="{% if selected_user.image %} {{ selected_user.image.url }}
+                              {% else %} {% static 'vendor/img/users/default_avatar.jpg' %}
+                              {% endif %}"
+                         class="img-thumbnail">
+                </div>
+                <form action="{% url 'admins:admin_user_update' selected_user.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="small mb-1" for="{{ form.first_name.id_for_label }}">Имя</label>
+                                {{ form.first_name }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="small mb-1" for="{{ form.last_name.id_for_label }}e">Фамилия</label>
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label class="small mb-1" for="{{ form.gender.id_for_label }}">Пол</label>
+                                {{ form.gender }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row mb-2">
+                        <div class="col-lg-12">
+                            <div class="custom-file">
+                                {{ form.image }}
+                                <label class="custom-file-label" for="{{ form.image.id_for_label }}">
+                                    Выберите изображение
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <label class="small mb-1" for="{{ form.username.id_for_label }}">Имя пользователя</label>
+                            {{ form.username }}
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="small mb-1" for="{{ form.email.id_for_label }}">Адрес электронной
+                                почты</label>
+                            {{ form.email }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-lg-12" style="margin-top: 33px;">
+                            <input class="btn btn-info btn-block" type="submit" value="Сохранить">
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                {% if user.is_superuser %}
+                    {% if selected_user.is_active %}
+                    <div class="col-lg-12" style="margin-top: 33px;">
+                        <a href="{% url 'admins:admin_user_delete' selected_user.id %}" class="btn btn-danger btn-block">
+                            Удалить
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="col-lg-12" style="margin-top: 33px;">
+                        <a href="{% url 'admins:admin_user_activate' selected_user.id %}" class="btn btn-success btn-block">
+                            Активировать
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% if selected_user.is_staff %}
+                    <div class="col-lg-12" style="margin-top: 33px;">
+                        <a href="{% url 'admins:admin_user_delete_is_staff' selected_user.id %}" class="btn btn-danger btn-block">
+                            Отключить права админа
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="col-lg-12" style="margin-top: 33px;">
+                        <a href="{% url 'admins:admin_user_is_staff' selected_user.id %}" class="btn btn-success btn-block">
+                            Подключить права админа
+                        </a>
+                    </div>
+                    {% endif %}
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
