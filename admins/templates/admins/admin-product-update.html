@@ -4,16 +4,16 @@
 {% block content %}
     <main>
         <div class="container-fluid">
-            <h1 class="mt-4">Редактирование продукта | {{ selected_product.name }}</h1>
+            <h1 class="mt-4">Редактирование продукта | {{ product.name }}</h1>
             <div class="card-body">
                 <div class="col-lg-12 text-center">
                     <img width="100" height="100"
-                         src="{% if selected_product.image %} {{ selected_product.image.url }}
+                         src="{% if product.image %} {{ product.image.url }}
                               {% else %} {% static 'vendor/img/products/default_image.jpg' %}
                               {% endif %}"
                          class="img-thumbnail">
                 </div>
-                <form action="{% url 'admins:admin_product_update' selected_product.id %}" method="post" enctype="multipart/form-data">
+                <form action="{% url 'admins:admin_product_update' product.id %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-row py-2">
                         <div class="col-lg-6">
@@ -61,14 +61,15 @@
                             <input class="btn btn-info btn-block" type="submit" value="Сохранить">
                         </div>
                     </div>
-                    <div class="form-row">
+                </form>
+                <div class="form-row">
                         <div class="col-lg-12" style="margin-top: 33px;">
-                        <a href="{% url 'admins:admin_product_delete' selected_product.id %}" class="btn btn-danger btn-block">
-                            Удалить
-                        </a>
+                            <form action="{% url 'admins:admin_product_delete' product.id %}" method="post">
+                                {% csrf_token %}
+                                <input class="btn btn-danger btn-block" type="submit" value="Удалить">
+                            </form>
                         </div>
                     </div>
-                </form>
             </div>
         </div>
     </main>
