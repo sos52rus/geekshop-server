@@ -17,7 +17,7 @@
                 <h1 class="my-4">GeekShop</h1>
                 <div class="list-group">
                     {% for category in product_categories %}
-                        <a href="#" class="list-group-item">{{ category.name }}</a>
+                        <a href="{% url 'products:category' category.id %}" class="list-group-item">{{ category.name }}</a>
                     {% endfor %}
                 </div>
 
@@ -54,45 +54,58 @@
                 </div>
 
                 <div class="row">
-                    {% for product in products %}
-                        <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="card h-100">
-                                <a href="#">
-                                    <img class="card-img-top"
-                                         src="/media/{{ product.image }}"
-                                         alt="">
-                                </a>
-                                <div class="card-body">
-                                    <h4 class="card-title">
-                                        <a href="#">{{ product.name }}</a>
-                                    </h4>
-                                    <h5>{{ product.price }} руб.</h5>
-                                    <p class="card-text">{{ product.description }}</p>
-                                </div>
-                                <div class="card-footer text-center">
-                                    <a href="{% url 'basket:basket_add' product.id %}" class="btn btn-outline-success">
-                                        Отправить в корзину
+                    {% if products %}
+                        {% for product in products %}
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <div class="card h-100">
+                                    <a href="#">
+                                        <img class="card-img-top"
+                                             src="/media/{{ product.image }}"
+                                             alt="">
                                     </a>
+                                    <div class="card-body">
+                                        <h4 class="card-title">
+                                            <a href="#">{{ product.name }}</a>
+                                        </h4>
+                                        <h5>{{ product.price }} руб.</h5>
+                                        <p class="card-text">{{ product.description }}</p>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <a href="{% url 'basket:basket_add' product.id %}" class="btn btn-outline-success">
+                                            Отправить в корзину
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-10" style="padding: 20px 50px 70px">
+                            <h3>Товары в данной категории отсутсвуют</h3>
                         </div>
-                    {% endfor %}
+                    {% endif %}
                 </div>
-
+                {% if products.has_other_pages %}
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        <li class="page-item {% if not products.has_previous %} disabled {% endif %}">
+                            <a class="page-link" href="{% if products.has_previous %}
+                                {% url 'products:page' products.previous_page_number %} {% else %} # {% endif %}"
+                               tabindex="-1" aria-disabled="true">Предыдущая</a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
+                        {% for page in products.paginator.page_range %}
+                        <li class="page-item"><a class="page-link" href="{% url 'products:page' page %}">
+                            {{ page }}
+                        </a>
+                        </li>
+                        {% endfor %}
+                        <li class="page-item {% if not products.has_next %} disabled {% endif %}">
+                            <a class="page-link" href="{% if products.has_next %}
+                                {% url 'products:page' products.next_page_number %} {% else %} # {% endif %}">
+                                Следующая</a>
                         </li>
                     </ul>
                 </nav>
-
+                {% endif %}
             </div>
 
         </div>
@@ -104,7 +117,7 @@
     <!-- Footer -->
     <footer class="py-5 bg-dark">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; GeekShop 2020</p>
+            <p class="m-0 text-center text-white">Copyright &copy; GeekShop 2021</p>
         </div>
         <!-- /.container -->
     </footer>

@@ -31,7 +31,7 @@
                             </tr>
                             </tfoot>
                             <tbody>
-                            {% for product in products %}
+                            {% for product in product_list %}
                                 <tr>
                                     <td><a href="{% url 'admins:admin_product_update' product.id %}" style="color: dodgerblue">
                                         {{ product.name }}
